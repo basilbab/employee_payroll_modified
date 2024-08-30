@@ -1,3 +1,4 @@
+import 'package:employee_payroll_modified/domain/employee.dart';
 import 'package:employee_payroll_modified/screen_payroll.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,11 @@ class _ScreenEmployeeDetailsState extends State<ScreenEmployeeDetails> {
   String? selectedGender;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
+  final idController = TextEditingController();
+  final emailController = TextEditingController();
+  final mobileController = TextEditingController();
+  final addressController = TextEditingController();
+  final basicPayController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +45,7 @@ class _ScreenEmployeeDetailsState extends State<ScreenEmployeeDetails> {
           padding: const EdgeInsets.all(8),
           child: Form(
             key: _formKey,
-            child: Column(
+            child: ListView(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -63,6 +69,7 @@ class _ScreenEmployeeDetailsState extends State<ScreenEmployeeDetails> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: idController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Employee ID Cannot be empty!';
@@ -96,6 +103,8 @@ class _ScreenEmployeeDetailsState extends State<ScreenEmployeeDetails> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: emailController,
+                    keyboardType: TextInputType.numberWithOptions(),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Email Cannot be empty!';
@@ -128,6 +137,7 @@ class _ScreenEmployeeDetailsState extends State<ScreenEmployeeDetails> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: mobileController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Mobile Number Cannot be empty!';
@@ -146,6 +156,7 @@ class _ScreenEmployeeDetailsState extends State<ScreenEmployeeDetails> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: addressController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Address Cannot be empty!';
@@ -165,6 +176,7 @@ class _ScreenEmployeeDetailsState extends State<ScreenEmployeeDetails> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    controller: basicPayController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Basic Pay Cannot be empty!';
@@ -183,8 +195,25 @@ class _ScreenEmployeeDetailsState extends State<ScreenEmployeeDetails> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      Employee e = Employee(
+                          employeeName: nameController.text,
+                          employeeDepartment: selectedDepartment,
+                          employeeID: idController.text,
+                          employeeEmail: emailController.text,
+                          employeeAddress: addressController.text,
+                          employeeGender: selectedGender,
+                          employeeBasicPay: basicPayController.text);
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ScreenPayroll()));
+                          builder: (context) => ScreenPayroll(
+                                employeeName: nameController.text,
+                                employeeID: idController.text,
+                                emplooyeeDepartment: selectedDepartment!,
+                                employeeEmail: emailController.text,
+                                employeeGender: selectedGender!,
+                                employeeMobile: mobileController.text,
+                                employeeAddress: addressController.text,
+                                employeeBasicPay: basicPayController.text,
+                              )));
                     }
                   },
                   style: ButtonStyle(
